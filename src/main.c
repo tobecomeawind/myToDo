@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include <stdint.h>
+#include <stdlib.h>
+
 #include "menu.h"
 
 
@@ -11,12 +13,12 @@ int main ( int argc, char* argv[] )
 	uint8_t i, w, h; 
 
 	h = 10;
-	w = 10;
+	w = 20;
 
 	initscr();
 	clear();
 		
-	char* list[] = {"First", "Second", "Third"};
+	char* list[] = {"Notes", "Goals and Tasks", "Progress"};
 	
 	menu = init_menu(h, w, (LINES - h) / 2, (COLS - w) / 2, (char**)list, 3);
 
@@ -32,7 +34,8 @@ int main ( int argc, char* argv[] )
 	mvwprintw(stdscr, (LINES - 10) / 2, COLS / 2, "You choose: %s\n", list[i - 1]);	
 
 	getch();
-	endwin();
+	endwin();	
+	
 	return 0;	
 }
 
