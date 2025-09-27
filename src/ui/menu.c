@@ -53,7 +53,7 @@ WMENU* init_menu ( uint8_t height,  uint8_t weight,
 	
 	win = newwin(height, weight, starty, startx);
 	
-	if ( !(win && choices && n_choices) )
+	if ( !win )
 		return NULL;
 
 	menu->win       = win;
