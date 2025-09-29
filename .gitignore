@@ -58,3 +58,4 @@ dkms.conf
 #CMAKE Build Directory
 
 /build
+/data

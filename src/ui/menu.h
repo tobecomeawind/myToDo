@@ -3,6 +3,7 @@
 
 #include <ncurses.h>
 #include <stdint.h>
+#include "list.h"
 
 typedef struct menu_window_struct {
 	WINDOW* win;
@@ -12,6 +13,8 @@ typedef struct menu_window_struct {
 } WMENU;
 
 
+void set_list_menu ( WMENU* menu, LIST* list);
+void set_choices_menu ( WMENU* menu, char** choices, uint8_t n_choices );
 
 uint8_t choice_menu ( WMENU* menu );
 WMENU* init_menu ( uint8_t height,  uint8_t weight,

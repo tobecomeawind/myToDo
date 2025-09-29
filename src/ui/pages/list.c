@@ -17,6 +17,7 @@ LIST* read_dir_list ( const char* dirname )
 {
 	DIR*           dp;    // dir      pointer
 	struct dirent* ditem; // dir item pointer
+	const  char*   subdirname;	
 	LIST*          lp;   // dir list pointer	
 
 	dp = opendir(dirname);
@@ -26,8 +27,15 @@ LIST* read_dir_list ( const char* dirname )
 	if ( !lp ) return NULL;
 
 
-	while ( (ditem = readdir(dp)) != NULL )
-		append_list(lp, ditem->d_name);
+	while ( (ditem = readdir(dp)) != NULL ) {
+		subdirname = ditem->d_name;
+		if ( strcmp(ditem->d_name, ".") == 0 )
+			subdirname = NULL;	
+		else if ( strcmp(ditem->d_name, ".." ) == 0 )
+			subdirname = "Back";	
+		
+		append_list(lp, subdirname);
+	}
 
 
 	closedir(dp);
@@ -39,6 +47,7 @@ LIST* read_dir_list ( const char* dirname )
 
 static void append_list ( LIST* lp, const char* filename )
 {					
+	if ( !filename ) return;	
 	insert_list(lp, lp->size - 1, filename);
 }
 

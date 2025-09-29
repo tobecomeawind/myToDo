@@ -66,10 +66,10 @@ static PATH* check_path_size ( PATH* ptp, const char* subpath )
 		if ( !tmp_path ) return NULL;
 
 		ptp->path = tmp_path;
-		ptp->cur_size += subpath_size;
 		ptp->max_size *= 2;
 	}	
 
+	ptp->cur_size += subpath_size;
 	return ptp;
 }
 

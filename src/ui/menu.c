@@ -34,13 +34,13 @@ uint8_t choice_menu ( WMENU* menu )
 				break;
 			case 10: //Enter
 				curs_set(1);	
-				return menu->current;
+				wclear(menu->win);
+				return menu->current - 1;
 		}	
 		print_menu_iml(menu);
 	}	
 
 }
-
 
 WMENU* init_menu ( uint8_t height,  uint8_t weight,
                    uint8_t starty,  uint8_t startx,
@@ -75,6 +75,19 @@ void del_menu ( WMENU* menu )
 	free(menu);	
 }
 
+void set_list_menu ( WMENU* menu, LIST* list)
+{
+	if ( !menu || !list ) return;
+	
+	set_choices_menu(menu, list->list, list->size - 1);
+}
+
+void set_choices_menu ( WMENU* menu, char** choices, uint8_t n_choices )
+{
+	if ( !menu || !choices ) return;
+	menu->choices = choices;
+	menu->n_choices = n_choices;	
+}
 
 static void print_menu_iml ( WMENU* menu )
 {
