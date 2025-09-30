@@ -6,49 +6,33 @@
 #include "notes_page.h"
 #include "path.h"
 
-WMENU* menus[4];
+WMENU* menus[COUNT_MENUS];
 
-static void start_choose_cycle();
-void init_notes_page();
+static void init_menus();
+static void init_cycle_notes_page();
 
-int main ()
-{
-	initscr();
-	
-	init_notes_page();
-	start_choose_cycle();
-	
-	getch();	
-	endwin();		
-}
 void init_notes_page ()
+{	
+	init_menus();
+	init_cycle_notes_page();	
+}
+
+static void init_menus ()
 {
 	uint8_t qsize = COLS / 4; //quarter size
 
 	uint8_t w = 40;
 	uint8_t h = 16;
 
-	//Years
-	menus[0] = init_menu( h,                  w,
-		                  (LINES - h) / 2 ,   (qsize * 0) + ( (qsize - w) / 2 ), 
-						  0,                  0);
-	// Months	
-	menus[1] = init_menu( h,                  w,
-			              (LINES - h) / 2,    (qsize * 1) + ( (qsize - w) / 2 ),
-						  0,                  0);
-	// Weeks	
-	menus[2] = init_menu( h,                  w,
-			              (LINES - h) / 2,    (qsize * 2) + ( (qsize - w) / 2 ), 
-						  0,                  0);
-	//Days	
-	menus[3] = init_menu( h,                  w,
-			              (LINES - h) / 2,    (qsize * 3) + ( (qsize - w) / 2 ), 
-						  0,                  0);
-		
+	
+	for ( int i = 0; i < COUNT_MENUS; i++ ) 
+		menus[i] = init_menu(h,               w, 
+				            (LINES - h) / 2, (qsize * i) + ((qsize - w) / 2),
+							 NULL,            0);			
 }
 
 
-static void start_choose_cycle()
+static void init_cycle_notes_page ()
 {	
 	PATH* dir_path;
 	LIST* dir_list;
@@ -72,9 +56,7 @@ static void start_choose_cycle()
 		switch ( user_choose ) {
 			case ( 0 ): // go back
 				if ( current_dir_type == YEARS ) {
-					// go to back page
-					refresh();
-					exit(1);	
+					return;	
 				} 
 				go_back_path(dir_path);
 				--current_dir_type;

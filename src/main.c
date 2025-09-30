@@ -1,39 +1,13 @@
-#include <stdio.h>
 #include <ncurses.h>
-#include <stdint.h>
-#include <stdlib.h>
-
+#include "main_page.h"
 #include "menu.h"
 
 
 
 int main ( int argc, char* argv[] )
 {
-	WMENU* menu;	
-	uint8_t i, w, h; 
-
-	h = 10;
-	w = 20;
-
 	initscr();
-	clear();
-		
-	char* list[] = {"Notes", "Goals and Tasks", "Progress"};
-	
-	menu = init_menu(h, w, (LINES - h) / 2, (COLS - w) / 2, (char**)list, 3);
-
-	if ( !menu ) {
-		printf("Menu not created !!!");
-		return -1;	
-	}
-
-	i = choice_menu(menu);	
-
-	del_menu(menu);
-	
-	mvwprintw(stdscr, (LINES - 10) / 2, COLS / 2, "You choose: %s\n", list[i - 1]);	
-
-	getch();
+	init_main_page();
 	endwin();	
 	
 	return 0;	
