@@ -8,8 +8,10 @@
 
 WMENU* menus[COUNT_MENUS];
 
+
 static void init_menus();
 static void init_cycle_notes_page();
+inline static void del_menus();
 
 void init_notes_page ()
 {	
@@ -31,6 +33,10 @@ static void init_menus ()
 							 NULL);			
 }
 
+inline static void del_menus()
+{
+	for ( int i = 0; i < COUNT_MENUS; i++ ) del_menu(menus[i]);
+}
 
 static void init_cycle_notes_page ()
 {	
@@ -38,49 +44,56 @@ static void init_cycle_notes_page ()
 	LIST* dir_list;
 	WMENU* current_menu;
 	MENU_TYPES current_dir_type = YEARS;
-	uint8_t    user_choose = 0;
+	uint8_t    user_choice = 0;
 
 	dir_path = init_path();
 	if ( !dir_path ) return;
 
 	while ( 1 ) {
 		mvwprintw(stdscr, 2, 2, "%s\n", dir_path->path);
-		// need frees old dir list	
 		current_menu = menus[current_dir_type];
 		
 		dir_list = init_from_dir_list(dir_path->path); 	
+		
+		del_list(current_menu->choices);	
 		set_list_menu(current_menu, dir_list);
 
-		user_choose = choice_menu(current_menu);
+		user_choice = choice_menu(current_menu);
 		wrefresh(current_menu->win);	
-		switch ( user_choose ) {
-			case ( 0 ): // go back
+		switch ( user_choice ) {
+			case ( 0 ): // Back
 				if ( current_dir_type == YEARS ) {
+					del_path(dir_path);
+					del_notes_page();	
 					return;	
 				} 
 				go_back_path(dir_path);
 				--current_dir_type;
 				break;
-			/*
-			case ( menus[current_dir_type]->n_choices - 1 ):
+			case ( 1 ):
 				if ( current_dir_type != YEARS ) {
-					// system("vim goals.txt")
+					char tmp[dir_path->max_size + 3 + 9];
+					sprintf(tmp, "%s %s/%s",
+							     "vim",
+								 dir_path->path,
+								 "goals.txt");	
+					system(tmp);
+					refresh();
 					break;
 				}	
-			*/
 			default:	// go next					
 				if ( current_dir_type == DAYS )	{
 					char tmp[dir_path->max_size + 3 + 3];
 					sprintf(tmp, "%s %s/%s",
 							     "vim",
 								 dir_path->path,
-								 current_menu->choices->list[user_choose]);	
+								 current_menu->choices->list[user_choice]);	
 					system(tmp);
 					refresh();
 					break;
 				}
 				
-				append_path(dir_path, current_menu->choices->list[user_choose]);	
+				append_path(dir_path, current_menu->choices->list[user_choice]);	
 				++current_dir_type;	
 				break;
 		}
@@ -91,7 +104,7 @@ static void init_cycle_notes_page ()
 
 void del_notes_page()
 {
-	
+	del_menus();	
 }
 
 

@@ -11,5 +11,6 @@ typedef enum menu_types_enum {  // /data
 } MENU_TYPES;
 
 void init_notes_page();
+void del_notes_page();
 
 #endif

@@ -27,15 +27,14 @@ LIST* init_from_dir_list ( const char* dirname )
 
 
 	while ( (ditem = readdir(dp)) != NULL ) {
-		subdirname = ditem->d_name;
-		if ( strcmp(ditem->d_name, ".") == 0 )
-			subdirname = NULL;	
-		else if ( strcmp(ditem->d_name, ".." ) == 0 )
-			subdirname = "Back";	
-		
-		append_list(lp, subdirname);
+		subdirname = ditem->d_name;	
+		if ( atoi(subdirname) != 0 )			
+			append_list(lp, subdirname);
+		else if ( strcmp(subdirname, "goals.txt") == 0 )
+			insert_list(lp, 0, "Goals");
 	}
-
+	
+	insert_list(lp, 0, "Back");
 
 	closedir(dp);
 
@@ -124,7 +123,7 @@ void del_list (LIST* lp)
 	
 	if ( !lp ) return;
 
-	for ( int i = 0; i < lp->size; i++ ) 
+	for ( int i = 0; i < lp->size - 1; i++ ) 
 		free(lp->list[i]);	
 	
 	free(lp->list);

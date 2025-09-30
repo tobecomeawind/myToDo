@@ -15,6 +15,8 @@ uint8_t choice_menu ( WMENU* menu )
 	keypad(menu->win, TRUE);
 	clear();
 	noecho();
+
+	menu->current = 1;
 	print_menu_iml(menu);	
 
 	while ( 1 ) {
