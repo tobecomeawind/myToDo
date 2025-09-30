@@ -28,7 +28,7 @@ static void init_menus ()
 	for ( int i = 0; i < COUNT_MENUS; i++ ) 
 		menus[i] = init_menu(h,               w, 
 				            (LINES - h) / 2, (qsize * i) + ((qsize - w) / 2),
-							 NULL,            0);			
+							 NULL);			
 }
 
 
@@ -48,7 +48,7 @@ static void init_cycle_notes_page ()
 		// need frees old dir list	
 		current_menu = menus[current_dir_type];
 		
-		dir_list = read_dir_list(dir_path->path); 	
+		dir_list = init_from_dir_list(dir_path->path); 	
 		set_list_menu(current_menu, dir_list);
 
 		user_choose = choice_menu(current_menu);
@@ -74,12 +74,13 @@ static void init_cycle_notes_page ()
 					sprintf(tmp, "%s %s/%s",
 							     "vim",
 								 dir_path->path,
-								 current_menu->choices[user_choose]);	
+								 current_menu->choices->list[user_choose]);	
 					system(tmp);
+					refresh();
 					break;
 				}
 				
-				append_path(dir_path, current_menu->choices[user_choose]);	
+				append_path(dir_path, current_menu->choices->list[user_choose]);	
 				++current_dir_type;	
 				break;
 		}
