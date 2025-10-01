@@ -21,7 +21,10 @@ void init_main_page()
 
 	choices_list = init_from_arr_list(list, sizeof(list) / sizeof(char*));
 
-	menu = init_menu(h, w, (LINES - h) / 2, (COLS - w) / 2, choices_list);
+	menu = init_menu(h,               w,
+			        (LINES - h) / 2, (COLS - w) / 2,
+				    "Main",      L_POS,	
+					choices_list);
 
 	if ( !menu ) {
 		printf("Menu not created !!!");

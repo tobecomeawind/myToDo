@@ -22,15 +22,20 @@ void init_notes_page ()
 static void init_menus ()
 {
 	uint8_t qsize = COLS / 4; //quarter size
-
-	uint8_t w = 40;
+		
+	uint8_t w = 20;
 	uint8_t h = 16;
 
-	
-	for ( int i = 0; i < COUNT_MENUS; i++ ) 
+	char* title = NULL;;
+
+	for ( int i = 0; i < COUNT_MENUS; i++ ) {
+
+		DIR_TYPE_TO_CHAR_M(i, title);
 		menus[i] = init_menu(h,               w, 
 				            (LINES - h) / 2, (qsize * i) + ((qsize - w) / 2),
-							 NULL);			
+							title,            M_POS, 
+							NULL);		
+	}	
 }
 
 inline static void del_menus()
@@ -55,7 +60,6 @@ static void init_cycle_notes_page ()
 		
 		dir_list = init_from_dir_list(dir_path->path); 	
 		
-		del_list(current_menu->choices);	
 		set_list_menu(current_menu, dir_list);
 
 		user_choice = choice_menu(current_menu);
